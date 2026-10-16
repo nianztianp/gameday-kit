@@ -8,6 +8,28 @@ if ! command -v uv >/dev/null 2>&1; then
   export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 fi
 
+if ! command -v claude >/dev/null 2>&1; then
+  echo ">> installing Claude Code CLI"
+  curl -fsSL https://claude.ai/install.sh | bash || npm i -g @anthropic-ai/claude-code || echo "!! claude install failed"
+fi
+if ! command -v codex >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
+  echo ">> installing Codex CLI"
+  npm i -g @openai/codex >/dev/null 2>&1 || echo "!! codex install failed"
+fi
+mkdir -p "$HOME/.claude" "$HOME/.codex"  # agent-toolkit detects agents by these dirs
+
+echo ">> VS Code extension (Claude Code)"
+ext_ok=
+# Remote IDEs: the plain `code` on PATH can be a stub; the remote-cli binary is the real one.
+for c in $(ls -d "$HOME"/.vscode-remote/bin/*/bin/remote-cli/code "$HOME"/.vscode-server/bin/*/bin/remote-cli/code \
+             "$HOME"/.openvscode-server/bin/*/bin/remote-cli/openvscode-server 2>/dev/null) \
+         code-server openvscode-server code; do
+  if command -v "$c" >/dev/null 2>&1; then
+    "$c" --install-extension anthropic.claude-code >/dev/null 2>&1 && ext_ok=1 && echo "   installed via $c" && break
+  fi
+done
+[ -n "$ext_ok" ] || echo "!! could not install extension; install 'Claude Code' from the Extensions panel (terminal 'claude' works regardless)"
+
 echo ">> installing python packages"
 pip install --user -q "strands-agents[a2a]" strands-agents-tools bedrock-agentcore bedrock-agentcore-starter-toolkit \
   || echo "!! pip install failed"
