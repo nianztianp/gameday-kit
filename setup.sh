@@ -12,9 +12,19 @@ if ! command -v claude >/dev/null 2>&1; then
   echo ">> installing Claude Code CLI"
   curl -fsSL https://claude.ai/install.sh | bash || npm i -g @anthropic-ai/claude-code || echo "!! claude install failed"
 fi
-if ! command -v codex >/dev/null 2>&1 && command -v npm >/dev/null 2>&1; then
+export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
+export PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"  # newer pnpm uses bin/
+if ! command -v codex >/dev/null 2>&1; then
+  if ! command -v pnpm >/dev/null 2>&1; then
+    echo ">> installing pnpm (standalone; works without Node)"
+    curl -fsSL https://get.pnpm.io/install.sh | env SHELL=bash sh - >/dev/null 2>&1 || echo "!! pnpm install failed"
+  fi
+  if command -v pnpm >/dev/null 2>&1 && ! command -v node >/dev/null 2>&1; then
+    echo ">> installing Node LTS via pnpm"
+    pnpm env use --global lts >/dev/null 2>&1 || echo "!! node install via pnpm failed"
+  fi
   echo ">> installing Codex CLI"
-  npm i -g @openai/codex >/dev/null 2>&1 || echo "!! codex install failed"
+  pnpm add -g @openai/codex >/dev/null 2>&1 || npm i -g @openai/codex >/dev/null 2>&1 || echo "!! codex install failed"
 fi
 mkdir -p "$HOME/.claude" "$HOME/.codex"  # agent-toolkit detects agents by these dirs
 
