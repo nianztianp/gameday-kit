@@ -22,9 +22,7 @@
       "args": [
         "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
       ],
-      "env": {
-        "AGENTCORE_ENABLE_TOOLS": "docs"
-      }
+      "env": {}
     }
   }
 }

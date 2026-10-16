@@ -50,8 +50,7 @@ fi
 if command -v codex >/dev/null 2>&1; then
   echo ">> Codex MCP servers (global ~/.codex/config.toml; re-adding overwrites)"
   codex mcp add strands -- uvx strands-agents-mcp-server >/dev/null || echo "!! codex add strands failed"
-  codex mcp add bedrock-agentcore-mcp-server --env AGENTCORE_ENABLE_TOOLS=docs \
-    -- uvx awslabs.amazon-bedrock-agentcore-mcp-server@latest >/dev/null || echo "!! codex add agentcore failed"
+  codex mcp add bedrock-agentcore-mcp-server -- uvx awslabs.amazon-bedrock-agentcore-mcp-server@latest >/dev/null || echo "!! codex add agentcore failed"
   codex mcp add aws-documentation -- uvx awslabs.aws-documentation-mcp-server@latest >/dev/null \
     || echo "!! codex add aws-documentation failed"
   codex mcp list || true

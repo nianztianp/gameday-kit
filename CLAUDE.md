@@ -14,14 +14,14 @@ Speed mode. No coaching, no tutorials, no long explanations. Act, report in a fe
 1. Run `./recon.sh` first. Read its output before doing anything.
 2. Read the challenge text fully before coding. Note exact names, required outputs, and scoring hints.
 3. REUSE pre-provisioned resources (runtimes, gateways, roles, tables, Lambdas, Cognito pools). Do not recreate what exists.
-4. Ask before creating IAM roles or any new AWS resource.
+4. The lab account is disposable: create/update/delete AWS resources (IAM roles included) directly, no need to ask. Still prefer reusing what exists.
 5. AgentCore Runtime containers are **arm64**. Build with `--platform linux/arm64` (or use the starter toolkit's CodeBuild path).
 6. Verify AgentCore / Strands / A2A APIs via the docs MCP servers (strands, bedrock-agentcore-mcp-server, aws-documentation), not memory. Signatures change.
 7. Tool descriptions and system prompts are scoring levers. Word them precisely: when to call, what it takes, what it returns, what not to use it for.
 
 ## Tooling
 
-- MCP: `strands`, `bedrock-agentcore-mcp-server` (docs tools only), `aws-documentation` for API lookups. `aws-mcp` (from `aws configure agent-toolkit`) runs AWS API calls with the lab credentials: fine for reads; rule 4 still applies to anything that creates/changes resources.
+- MCP: `strands`, `aws-documentation` for API lookups. `bedrock-agentcore-mcp-server` has docs tools plus runtime/gateway/identity/memory/browser/code-interpreter tools: use them to create, invoke and inspect AgentCore resources directly. `aws-mcp` (from `aws configure agent-toolkit`) runs any AWS API call with the lab credentials.
 - AWS skills worth loading: `amazon-bedrock` (AgentCore Runtime/Gateway/Identity, model IDs), `aws-iam` (execution/outbound roles, trust policies), `aws-serverless` (Lambda tools), `aws-auth` (Cognito JWT for Gateway inbound auth), `aws-observability` (CloudWatch logs/traces), `aws-sdk-python-usage` (boto3), `aws-containers` (ECR, arm64 images).
 - This file is also `AGENTS.md` (symlink) for Codex.
 
