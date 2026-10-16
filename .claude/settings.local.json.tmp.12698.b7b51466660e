@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//tmp/test/.claude/**)",
+      "Read(//home/codespace/.aws/**)",
+      "Bash(AWS_REGION=us-west-2 ./recon.sh)",
+      "Bash(timeout 60 uvx awslabs.amazon-bedrock-agentcore-mcp-server@latest --help)",
+      "Read(//tmp/**)",
+      "Bash(timeout 300 aws configure agent-toolkit --yes)",
+      "Bash(echo \"exit=$?\")",
+      "WebFetch(domain:developers.openai.com)",
+      "WebFetch(domain:learn.chatgpt.com)",
+      "Bash(claude mcp *)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(aws --version)",
+      "Bash(aws agent-toolkit *)",
+      "Bash(grep -iA15 -- '--agent')",
+      "Bash(aws configure *)",
+      "Bash(cd /usr/local/aws-cli/v2/2.38.1/dist; ls | head -30; grep -rla '\\\\.codex' . 2>/dev/null | head)",
+      "Read(//usr/local/aws-cli/v2/2.38.1/dist/**)",
+      "Bash(mkdir -p /tmp/claude-1000/-workspaces-gameday-kit/87046a39-a453-483e-9ec6-2fdb0e9fa090/scratchpad/fakehome/.codex)",
+      "Bash(cp -r ~/.aws /tmp/claude-1000/-workspaces-gameday-kit/87046a39-a453-483e-9ec6-2fdb0e9fa090/scratchpad/fakehome/)",
+      "Bash(HOME=/tmp/claude-1000/-workspaces-gameday-kit/87046a39-a453-483e-9ec6-2fdb0e9fa090/scratchpad/fakehome timeout 120 aws configure agent-toolkit --yes)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git push *)"
+    ]
+  }
+}

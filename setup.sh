@@ -17,7 +17,25 @@ for p in strands-agents-mcp-server awslabs.amazon-bedrock-agentcore-mcp-server a
   uvx "$p" --help >/dev/null 2>&1 </dev/null || echo "!! could not fetch $p"
 done
 
+# Runs after Codex/Claude are installed so it detects both (Codex skills go to ~/.agents/skills).
+echo ">> AWS agent toolkit (AWS skills + aws-mcp server, user-level)"
+if command -v aws >/dev/null 2>&1; then
+  aws configure agent-toolkit --yes >/dev/null 2>&1 || echo "!! aws configure agent-toolkit failed (try upgrading AWS CLI v2)"
+else
+  echo "!! aws CLI not found; skipping agent toolkit"
+fi
+
+if command -v codex >/dev/null 2>&1; then
+  echo ">> Codex MCP servers (global ~/.codex/config.toml; re-adding overwrites)"
+  codex mcp add strands -- uvx strands-agents-mcp-server >/dev/null || echo "!! codex add strands failed"
+  codex mcp add bedrock-agentcore-mcp-server --env AGENTCORE_ENABLE_TOOLS=docs \
+    -- uvx awslabs.amazon-bedrock-agentcore-mcp-server@latest >/dev/null || echo "!! codex add agentcore failed"
+  codex mcp add aws-documentation -- uvx awslabs.aws-documentation-mcp-server@latest >/dev/null \
+    || echo "!! codex add aws-documentation failed"
+  codex mcp list || true
+fi
+
 echo ">> MCP status"
-claude mcp list || echo "!! claude mcp list failed"
+command -v claude >/dev/null 2>&1 && { claude mcp list || echo "!! claude mcp list failed"; }
 chmod +x recon.sh 2>/dev/null
 exit 0

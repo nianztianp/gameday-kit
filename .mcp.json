@@ -8,14 +8,6 @@
       ],
       "env": {}
     },
-    "bedrock-agentcore-mcp-server": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": [
-        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
-      ],
-      "env": {}
-    },
     "aws-documentation": {
       "type": "stdio",
       "command": "uvx",
@@ -23,6 +15,16 @@
         "awslabs.aws-documentation-mcp-server@latest"
       ],
       "env": {}
+    },
+    "bedrock-agentcore-mcp-server": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "awslabs.amazon-bedrock-agentcore-mcp-server@latest"
+      ],
+      "env": {
+        "AGENTCORE_ENABLE_TOOLS": "docs"
+      }
     }
   }
 }

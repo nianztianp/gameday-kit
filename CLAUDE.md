@@ -19,6 +19,12 @@ Speed mode. No coaching, no tutorials, no long explanations. Act, report in a fe
 6. Verify AgentCore / Strands / A2A APIs via the docs MCP servers (strands, bedrock-agentcore-mcp-server, aws-documentation), not memory. Signatures change.
 7. Tool descriptions and system prompts are scoring levers. Word them precisely: when to call, what it takes, what it returns, what not to use it for.
 
+## Tooling
+
+- MCP: `strands`, `bedrock-agentcore-mcp-server` (docs tools only), `aws-documentation` for API lookups. `aws-mcp` (from `aws configure agent-toolkit`) runs AWS API calls with the lab credentials: fine for reads; rule 4 still applies to anything that creates/changes resources.
+- AWS skills worth loading: `amazon-bedrock` (AgentCore Runtime/Gateway/Identity, model IDs), `aws-iam` (execution/outbound roles, trust policies), `aws-serverless` (Lambda tools), `aws-auth` (Cognito JWT for Gateway inbound auth), `aws-observability` (CloudWatch logs/traces), `aws-sdk-python-usage` (boto3), `aws-containers` (ECR, arm64 images).
+- This file is also `AGENTS.md` (symlink) for Codex.
+
 ## Debug checklist: agent does not call a tool
 
 Go in order:
