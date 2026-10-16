@@ -25,6 +25,17 @@ Speed mode. No coaching, no tutorials, no long explanations. Act, report in a fe
 - AWS skills worth loading: `amazon-bedrock` (AgentCore Runtime/Gateway/Identity, model IDs), `aws-iam` (execution/outbound roles, trust policies), `aws-serverless` (Lambda tools), `aws-auth` (Cognito JWT for Gateway inbound auth), `aws-observability` (CloudWatch logs/traces), `aws-sdk-python-usage` (boto3), `aws-containers` (ECR, arm64 images).
 - This file is also `AGENTS.md` (symlink) for Codex.
 
+## Likely services in the event
+
+Event scope: AgentCore, Strands, MCP, Bedrock Guardrails + Knowledge Bases; models Nova Canvas, Nova Pro, Claude Haiku/Sonnet/Opus, Titan Text Embeddings V2; plus DynamoDB, EC2, EventBridge, OpenSearch, S3, serverless.
+
+- Model IDs: take the exact ID/inference-profile from recon output (`us.`/`global.` prefixes); do not guess versions.
+- Nova Canvas (image) and Titan Embeddings V2 use InvokeModel, not Converse. Check region availability and request body via docs.
+- Knowledge Base: data source (S3) must be synced (ingestion job) before queries return anything. Embedding model and vector index dimension must match (Titan V2 supports 256/512/1024). Query via `bedrock-agent-runtime` Retrieve / RetrieveAndGenerate.
+- Guardrails: attach by ID + version to the model call (Strands `BedrockModel(guardrail_id=..., guardrail_version=...)`; verify in docs). Check which topic/word/PII filters block your test input.
+- OpenSearch Serverless: needs data access policy for your principal, or queries return 403.
+- Extra skills: `aws-database` (DynamoDB/OpenSearch choices), `aws-storage` (S3), `aws-messaging-and-streaming` (EventBridge), `aws-compute` (EC2), `aws-serverless`.
+
 ## Debug checklist: agent does not call a tool
 
 Go in order:
