@@ -1,0 +1,3 @@
+{
+  "enabledMcpjsonServers": ["strands", "bedrock-agentcore-mcp-server", "aws-documentation"]
+}
